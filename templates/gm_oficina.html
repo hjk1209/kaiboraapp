@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GM - Hub da Oficina</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='gm.css') }}">
+</head>
+<body>
+    <header class="gm-header">
+        <h1>TERMINAL MESTRE DA GUILDA</h1>
+        <p>Acesso: Game Master (Nível 99) | Tempo do Jogo: [SINCRONIZADO COM RELÓGIO REAL]</p>
+    </header>
+    
+    <nav class="gm-nav">
+        <a href="/gm">Painel de Controle (Eventos)</a>
+        <a href="/gm-hub">Hub de Gerenciamento (Jogadores)</a>
+        <a href="/gm-loja">Hub da Loja (Economia)</a>
+        <a href="/gm-mapa">Mapa de Rastreamento (Pessoas)</a>
+        <a href="/gm-oficina" class="active">Hub da Oficina (Produção)</a> </nav>
+    
+    <div class="gm-container">
+        <div class="gm-coluna">
+            <div class="gm-widget">
+                <h3>CRIAR NOVA RECEITA DE PRODUÇÃO</h3>
+                <form id="form-receita-criar" class="form-multi-input">
+                    <input type="text" id="receita-item-final" placeholder="Nome do Item Final (ex: kit medico)" required>
+                    <input type="number" id="receita-quantia" placeholder="Quantia Produzida (ex: 1)" value="1" min="1" required>
+                    
+                    <label for="receita-ingredientes">Ingredientes (Formato JSON):</label>
+                    <textarea id="receita-ingredientes" rows="4" placeholder='{"tecido": 2, "antisseptico": 1}' required></textarea>
+                    
+                    <button type="submit">[CRIAR RECEITA]</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="gm-coluna">
+            <div class="gm-widget">
+                <h3>RECEITAS DE PRODUÇÃO ATUAIS</h3>
+                <div class="widget-content">
+                    <ul id="lista-receitas">
+                        <li>Carregando...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- FUNÇÕES DE CARREGAMENTO (READ) ---
+        
+        async function carregarReceitas() {
+            try {
+                const response = await fetch('/api/receitas');
+                const receitas = await response.json();
+                const lista = document.getElementById('lista-receitas');
+                lista.innerHTML = ''; 
+                
+                if (receitas.length === 0) {
+                    lista.innerHTML = '<li>Nenhuma receita de produção definida.</li>';
+                }
+                
+                receitas.forEach(r => {
+                    lista.innerHTML += `
+                        <li class="receita-item">
+                            <div class="receita-info">
+                                <strong>${r.quantia_produzida}x ${r.nome_item_final}</strong>
+                                <em>Requer: ${r.ingredientes_json}</em>
+                            </div>
+                            <button class="btn-receita-delete btn-task-delete" data-id="${r.id}">[X]</button>
+                        </li>`;
+                });
+            } catch (err) { console.error('Erro ao carregar receitas:', err); }
+        }
+
+        // --- FUNÇÕES DE ENVIO (CREATE) ---
+        
+        document.getElementById('form-receita-criar').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('receita-item-final').value;
+            const quantia = document.getElementById('receita-quantia').value;
+            const ingredientes = document.getElementById('receita-ingredientes').value;
+            
+            if (!nome || !quantia || !ingredientes) {
+                alert("Todos os campos são obrigatórios.");
+                return;
+            }
+            
+            // Validação simples do JSON no frontend
+            try {
+                JSON.parse(ingredientes);
+            } catch (err) {
+                alert("Erro no formato JSON dos Ingredientes!\nUse: {\"item1\": 1, \"item2\": 2}");
+                return;
+            }
+            
+            const response = await fetch('/api/receitas', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ 
+                    nome_item_final: nome, 
+                    quantia_produzida: quantia, 
+                    ingredientes_json: ingredientes
+                })
+            });
+            
+            if (!response.ok) {
+                const err = await response.json();
+                alert(`Erro: ${err.erro}`);
+            } else {
+                document.getElementById('receita-item-final').value = '';
+                document.getElementById('receita-quantia').value = '1';
+                document.getElementById('receita-ingredientes').value = '';
+                carregarReceitas(); // Atualiza a lista
+            }
+        });
+
+        // --- FUNÇÕES DE GERENCIAMENTO (DELETE) ---
+
+        document.getElementById('lista-receitas').addEventListener('click', async (e) => {
+            if (e.target.classList.contains('btn-receita-delete')) {
+                const id = e.target.dataset.id;
+                if (!id) return;
+                
+                if (confirm('REMOVER esta receita permanentemente?')) {
+                    await fetch(`/api/receitas/${id}`, { method: 'DELETE' });
+                    carregarReceitas();
+                }
+            }
+        });
+
+        // --- INICIALIZAÇÃO ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            await carregarReceitas();
+        });
+    </script>
+</body>
+</html>

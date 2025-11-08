@@ -1,0 +1,504 @@
+/* --- FONTES E CORES GLOBAIS --- */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+body {
+    background-color: #0d0d0d;
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- CABEÇALHO E NAVEGAÇÃO --- */
+.gm-header {
+    background-color: #a00; /* Vermelho GM */
+    color: #fff;
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 3px solid #ff4141;
+}
+.gm-header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+.gm-header p {
+    margin: 5px 0 0 0;
+    font-size: 0.9em;
+    color: #ffc;
+}
+
+.gm-nav {
+    background-color: #333;
+    border-bottom: 2px solid #f00;
+    display: flex;
+}
+.gm-nav a {
+    color: #fff;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.gm-nav a:hover {
+    background-color: #555;
+}
+.gm-nav a.active {
+    background-color: #a00;
+}
+
+/* --- LAYOUT GERAL --- */
+.gm-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+.gm-coluna {
+    flex: 1;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- WIDGETS --- */
+.gm-widget {
+    background-color: #1a1a1a;
+    border: 1px solid #444;
+}
+.gm-widget h3 {
+    background-color: #333;
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 1.1em;
+    border-bottom: 1px solid #444;
+}
+.gm-widget .widget-content {
+    padding: 15px;
+}
+.gm-widget ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* --- FORMULÁRIOS --- */
+input[type="text"],
+input[type="time"],
+input[type="number"],
+select,
+textarea {
+    width: 95%;
+    padding: 10px;
+    background-color: #1a1a1a;
+    border: 1px solid #888;
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+}
+form {
+    padding: 15px;
+}
+button[type="submit"] {
+    background-color: #a00;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+button[type="submit"]:hover {
+    background-color: #f00;
+}
+.btn-warn {
+    background-color: #a80;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 15px 15px 15px;
+    width: calc(100% - 30px);
+}
+.btn-warn:hover {
+    background-color: #ff0;
+    color: #000;
+}
+
+.form-cronograma {
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px dashed #444;
+}
+.form-cronograma input[type="time"] { width: auto; }
+.form-cronograma input[type="text"] { flex: 1; }
+.form-cronograma button { width: auto; }
+
+.form-multi-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px dashed #444;
+}
+.form-multi-input .form-row {
+    display: flex;
+    gap: 10px;
+}
+.form-multi-input .form-row input {
+    width: 45%;
+    flex: 1;
+}
+.form-multi-input textarea {
+    width: 95%;
+    min-height: 80px;
+    resize: vertical;
+}
+.form-multi-input label {
+    display: block;
+    margin-bottom: -5px;
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* --- LISTAS DE ITENS (Tarefas, Cronogramas) --- */
+.tarefa-item, .item-cronograma {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #444;
+}
+.tarefa-item:last-child, .item-cronograma:last-child {
+    border-bottom: none;
+}
+.tarefa-info {
+    display: flex;
+    flex-direction: column;
+}
+.tarefa-info strong {
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+.tarefa-info em {
+    font-size: 0.9em;
+    color: #00ff41; /* Verde (recompensa) */
+}
+.task-buttons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.btn-task-delete {
+    background: #a00;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 8px;
+}
+.btn-task-delete:hover { background: #f00; }
+.tarefa-complete-select {
+    background-color: #1a1a1a;
+    border: 1px solid #888;
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+    padding: 5px;
+    font-size: 0.9em;
+    max-width: 150px;
+}
+.tarefa-complete-select:focus {
+    outline: none;
+    border-color: #00ff41;
+}
+
+/* --- CONTROLE DO HABITAT (gm.html) --- */
+.sistema-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #444;
+}
+.sistema-item:last-child { border-bottom: none; }
+.sistema-item strong {
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+.btn-status-toggle {
+    border: none;
+    padding: 8px 12px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 130px;
+}
+.status-funcional {
+    background-color: #080;
+    color: #fff;
+}
+.status-funcional:hover { background-color: #0f0; color: #000; }
+.status-danificado {
+    background-color: #a00;
+    color: #fff;
+    animation: pulse-red-bg 1.5s infinite;
+}
+.status-danificado:hover { background-color: #f00; }
+@keyframes pulse-red-bg {
+    0% { background-color: #a00; }
+    50% { background-color: #f33; }
+    100% { background-color: #a00; }
+}
+
+/* --- LOG DE INFORMES (gm.html, gm_loja.html) --- */
+.log-window {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #111;
+    border: 1px dashed #444;
+    padding: 10px;
+}
+.log-window ul {
+    padding-left: 0;
+}
+.log-window .log-entry {
+    color: #ccc;
+    font-size: 0.9em;
+    padding: 5px;
+    border-bottom: 1px dashed #333;
+}
+.log-window .log-time {
+    color: #aaa;
+    font-weight: bold;
+}
+.log-window strong { color: #ffc; }
+.log-window em { color: #ccc; font-style: italic; }
+
+/* --- HUB DO JOGADOR (gm_hub.html) --- */
+.jogador-hub-item {
+    background-color: #333;
+    border: 1px solid #555;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.jogador-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #555;
+    padding-bottom: 5px;
+}
+.jogador-info-header strong {
+    color: #ffc;
+    font-size: 1.2em;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px;
+    margin: 10px 0;
+    font-size: 0.9em;
+    color: #ccc;
+}
+.stats-inventario {
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #222;
+    border: 1px dashed #444;
+}
+.stats-inventario strong { color: #fff; }
+.form-adjust-stats, .form-adjust-inventario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0;
+    margin-top: 10px;
+}
+.stat-adjust-input, .item-nome-input, .item-quantia-input {
+    flex: 1;
+    min-width: 100px;
+    padding: 8px;
+    margin-bottom: 0;
+}
+.btn-adjust {
+    background-color: #a80; /* Amarelo/Ouro */
+    color: #fff;
+    border: none;
+    padding: 8px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    height: 37px;
+}
+.btn-adjust:hover { background-color: #ff0; color: #000; }
+.form-adjust-inventario {
+    border-top: 1px dashed #555;
+    padding-top: 10px;
+}
+
+/* --- HUB DO RODÍZIO (gm_hub.html) --- */
+.rodizio-info {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #444;
+}
+.rodizio-item-gm {
+    font-size: 1.1em;
+    padding: 5px;
+    color: #f0f0f0;
+    border-bottom: 1px dashed #444;
+}
+.rodizio-item-gm:last-child { border-bottom: none; }
+.rodizio-item-gm strong {
+    color: #ffc; /* Amarelo pálido */
+}
+.rodizio-hr {
+    border: none;
+    border-top: 1px dashed #444;
+    margin: 15px 0;
+}
+
+/* --- HUB DA LOJA (gm_loja.html) --- */
+.loja-gerenciar-item {
+    background-color: #333;
+    border: 1px solid #555;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+.loja-gerenciar-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.loja-gerenciar-info strong {
+    font-size: 1.2em;
+    color: #ffc;
+}
+.loja-gerenciar-info em {
+    font-size: 0.9em;
+    color: #aaa;
+}
+.form-adjust-loja {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    padding: 0;
+}
+.form-adjust-loja input {
+    flex: 1;
+    background-color: #1a1a1a;
+    border: 1px solid #888;
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+    padding: 8px;
+    margin: 0;
+}
+.btn-loja-delete {
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* --- HUB DO MAPA (gm_mapa.html) --- */
+.map-grid-gm {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+.map-grid-gm .grid-square {
+    height: 120px;
+    background-color: #222;
+    border: 1px solid #444;
+    color: #aaa;
+    font-size: 0.9em;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+.grid-title {
+    font-weight: bold;
+    color: #fff;
+    border-bottom: 1px dashed #555;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.grid-ocupantes {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow-y: auto;
+}
+.loc-pino {
+    display: block;
+    padding: 2px 4px;
+    font-size: 0.9em;
+    border-radius: 3px;
+}
+.loc-jogador { /* Jogador (Verde) */
+    background-color: #050;
+    border: 1px solid #0f0;
+    color: #0f0;
+}
+.loc-npc { /* NPC (Azul) */
+    background-color: #004a8c;
+    border: 1px solid #0078d4;
+    color: #9cdcfe;
+}
+.npc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #444;
+    padding: 10px 0;
+}
+.npc-info {
+    display: flex;
+    flex-direction: column;
+}
+.npc-info strong {
+    font-size: 1.1em;
+    color: #9cdcfe; /* Azul (para diferenciar de Jogador) */
+}
+.npc-info em {
+    font-size: 0.9em;
+    color: #aaa;
+}
+.npc-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.npc-move-select {
+    background-color: #1a1a1a;
+    border: 1px solid #888;
+    color: #f0f0f0;
+    font-family: 'Roboto Mono', monospace;
+    padding: 5px;
+}
+
+/* --- HUB DA OFICINA (gm_oficina.html) --- */
+.receita-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #444;
+}
+.receita-item:last-child {
+    border-bottom: none;
+}
+.receita-info {
+    display: flex;
+    flex-direction: column;
+}
+.receita-info strong {
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+.receita-info em {
+    font-size: 0.9em;
+    color: #00ff41; /* Verde */
+}

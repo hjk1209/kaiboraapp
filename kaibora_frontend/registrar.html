@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaibora - Registrar</title>
+    <link rel="stylesheet" href="login.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00ff41"/>
+    <link rel="apple-touch-icon" href="static/icon.png">
+    </head>
+<body>
+    <div class="login-container">
+        <h1 class="login-title">= REGISTRO DA GUILDA =</h1>
+        <p class="login-subtitle">Registrando novo Operador no Habitat ENFF...</p>
+        
+        <form id="register-form">
+            <div class="form-group">
+                <label for="username">Login de Operador (Usuário):</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha de Acesso:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <hr class="form-divider">
+            
+            <div class="form-group">
+                <label for="nome_aventureiro">Nome de Aventureiro (Personagem):</label>
+                <input type="text" id="nome_aventureiro" name="nome_aventureiro" required>
+            </div>
+            <div class="form-group">
+                <label for="nome_jogador">Seu Nome Real (Opcional):</label>
+                <input type="text" id="nome_jogador" name="nome_jogador">
+            </div>
+            <div class="form-group">
+                <label for="classe_origem">Classe / Origem (Opcional):</label>
+                <input type="text" id="classe_origem" name="classe_origem" placeholder="Ex: Engenheiro, Batedor...">
+            </div>
+            <div class="form-group">
+                <label for="motivacao">Motivação (Opcional):</label>
+                <textarea id="motivacao" name="motivacao" rows="3" placeholder="Porque você se juntou à Guilda?"></textarea>
+            </div>
+            
+            <button type="submit" class="login-btn">[REGISTRAR CONTA]</button>
+        </form>
+        
+        <div id="register-error" class="login-error"></div>
+        <div id="register-success" class="login-success" style="display: none;"></div>
+        
+        <div class="login-footer">
+            <p>Já possui um registro?</p>
+            <a href="index.html">[FAZER LOGIN]</a> </div>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const errorDiv = document.getElementById('register-error');
+            const successDiv = document.getElementById('register-success');
+            errorDiv.textContent = '';
+            successDiv.style.display = 'none';
+
+            const data = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                nome_aventureiro: document.getElementById('nome_aventureiro').value,
+                nome_jogador: document.getElementById('nome_jogador').value,
+                classe_origem: document.getElementById('classe_origem').value,
+                motivacao: document.getElementById('motivacao').value
+            };
+            
+            // --- CORREÇÃO DE CORS/REDIRECT ---
+            // Detecta se estamos em localhost ou no servidor online
+            const baseUrl = window.location.hostname.includes('127.0.0.1') 
+                s            ? 'http://127.0.0.1:5000' 
+                            : 'https://kaiporav0-5.onrender.com'; // <-- MUDE ESTE URL se o seu Render for diferente
+            
+            try {
+                const response = await fetch(`${baseUrl}/api/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // SUCESSO!
+                    successDiv.textContent = 'Registro concluído! Redirecionando para o login...';
+                    successDiv.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; // Redireciona para o login (index.html)
+                    }, 2000);
+                } else {
+                    // Falha (ex: usuário já existe)
+                    throw new Error(result.erro || 'Erro desconhecido');
+                }
+            } catch (error) {
+                console.error("Erro ao tentar registrar:", error);
+                errorDiv.textContent = `Falha no registro: ${error.message}`;
+            }
+        });
+        
+        // --- === CÓDIGO PWA ADICIONADO === ---
+        // Regista o Service Worker na página de registro
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('SW registado (Registro):', reg.scope))
+                    .catch(err => console.error('Falha no registo do SW (Registro):', err));
+            });
+        }
+    </script>
+</body>
+</html>

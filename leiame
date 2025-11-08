@@ -1,0 +1,31 @@
+/o_jogo/  (A sua pasta principal)
+|
+|-- app.py                 # O "Cérebro" (Servidor Backend Python/Flask)
+|-- kaibora.db             # O Banco de Dados (criado automaticamente pelo app.py)
+|
+|-- index.html             # A "Porta de Entrada" (antigo login.html)
+|-- registrar.html         # Página de Registo de Aventureiro
+|-- login.css              # Estilo do Login/Registo
+|
+|-- kaibora.html           # O Aplicativo do Jogador (o "Guia Kaibora")
+|-- kaibora.css            # O Estilo do Aplicativo do Jogador
+|
+|-- mapa_3d.xhtml          # O seu ficheiro de mapa 3D (baseado no mapa.FCStd)
+|
+|-- manifest.json          # Ficheiro de configuração do PWA (App de telemóvel)
+|-- sw.js                  # Ficheiro "Service Worker" (para o PWA funcionar offline)
+|-- requirements.txt       # Lista de pacotes Python para o servidor online
+|
+|-- /templates/            # Pasta para os painéis do GM (Mestre)
+|   |-- gm.html            # Painel 1: Eventos, Habitat, Quests
+|   |-- gm_hub.html        # Painel 2: Jogadores, Stats, Rodízio
+|   |-- gm_loja.html       # Painel 3: Loja, Estoque, Preços
+|   |-- gm_mapa.html       # Painel 4: Mapa de Rastreamento, NPCs
+|   |-- gm_oficina.html    # Painel 5: Receitas de Produção (Crafting)
+|
+|-- /static/               # Pasta para ficheiros partilhados (CSS, JS, Imagens)
+|   |-- gm.css             # O estilo de todos os painéis do GM
+|   |-- x3dom.js           # O software do mapa 3D
+|   |-- x3dom.css          # O estilo do mapa 3D
+|   |-- icon.png           # O ícone do app que eu gerei
+|
